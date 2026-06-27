@@ -7,92 +7,99 @@ import { logout } from "@/entities/auth/api/auth-repository";
 import type { AuthProfile } from "@/entities/auth/model/types";
 
 export function ProfileSection() {
-  const router = useRouter();
-  const [profile, setProfile] = useState<AuthProfile | null>(null);
+	const router = useRouter();
+	const [profile, setProfile] = useState<AuthProfile | null>(null);
+	const [ready, setReady] = useState(false);
 
-  useEffect(() => {
-    const stored = localStorage.getItem("auth_profile");
-    const token = localStorage.getItem("auth_token");
-    if (!stored || !token) {
-      router.push("/login");
-      return;
-    }
-    try {
-      setProfile(JSON.parse(stored));
-    } catch {
-      router.push("/login");
-    }
-  }, [router]);
+	useEffect(() => {
+		const stored = localStorage.getItem("auth_profile");
+		const token = localStorage.getItem("auth_token");
+		if (stored && token) {
+			try {
+				setProfile(JSON.parse(stored) as AuthProfile);
+			} catch {
+				setProfile(null);
+			}
+		}
+		setReady(true);
+	}, []);
 
-  const handleLogout = async () => {
-    const token = localStorage.getItem("auth_token");
-    if (token) await logout(token);
-    localStorage.removeItem("auth_token");
-    localStorage.removeItem("refresh_token");
-    localStorage.removeItem("auth_profile");
-    router.push("/login");
-  };
+	useEffect(() => {
+		if (ready && !profile) {
+			router.push("/login");
+		}
+	}, [profile, ready, router]);
 
-  if (!profile) return null;
+	const handleLogout = async () => {
+		const token = localStorage.getItem("auth_token");
+		if (token) await logout(token);
+		localStorage.removeItem("auth_token");
+		localStorage.removeItem("refresh_token");
+		localStorage.removeItem("auth_profile");
+		router.push("/login");
+	};
 
-  return (
-    <section className="section-space">
-      <Container className="max-w-lg">
-        <div className="rounded-lg border border-border bg-card p-8 shadow-sm">
-          <h1 className="text-2xl font-bold text-primary">Profile</h1>
+	if (!ready || !profile) return null;
 
-          <div className="mt-6 space-y-4">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
-                Name
-              </p>
-              <p className="mt-0.5 text-sm text-primary">{profile.name}</p>
-            </div>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
-                Phone
-              </p>
-              <p className="mt-0.5 text-sm text-primary">
-                {profile.phoneNumber}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
-                Account Type
-              </p>
-              <p className="mt-0.5 text-sm text-primary capitalize">
-                {profile.type}
-              </p>
-            </div>
-            {profile.email && (
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
-                  Email
-                </p>
-                <p className="mt-0.5 text-sm text-primary">{profile.email}</p>
-              </div>
-            )}
-          </div>
+	return (
+		<section className="section-space">
+			<Container className="max-w-lg">
+				<div className="rounded-lg border border-white/10 bg-card p-8 shadow-[0_18px_50px_rgba(0,0,0,0.22)]">
+					<p className="eyebrow text-accent">Account</p>
+					<h1 className="mt-2 text-2xl font-black text-foreground">Profile</h1>
 
-          <div className="mt-8 flex gap-3">
-            {profile.type === "creator" && (
-              <a
-                href={process.env.NEXT_PUBLIC_DASHBOARD_URL || "http://localhost:3001/admin"}
-                className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition hover:bg-primary/88"
-              >
-                Creator Dashboard
-              </a>
-            )}
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="rounded-lg border border-border px-4 py-2 text-sm font-semibold text-muted-foreground transition hover:bg-muted"
-            >
-              Sign Out
-            </button>
-          </div>
-        </div>
-      </Container>
-    </section>
-  );
+					<div className="mt-6 space-y-4">
+						<div>
+							<p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+								Name
+							</p>
+							<p className="mt-0.5 text-sm text-foreground">{profile.name}</p>
+						</div>
+						<div>
+							<p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+								Phone
+							</p>
+							<p className="mt-0.5 text-sm text-foreground">
+								{profile.phoneNumber}
+							</p>
+						</div>
+						<div>
+							<p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+								Account Type
+							</p>
+							<p className="mt-0.5 text-sm capitalize text-foreground">
+								{profile.type}
+							</p>
+						</div>
+						{profile.email ? (
+							<div>
+								<p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+									Email
+								</p>
+								<p className="mt-0.5 text-sm text-foreground">{profile.email}</p>
+							</div>
+						) : null}
+					</div>
+
+					<div className="mt-8 flex gap-3">
+						{profile.type === "creator" ? (
+							<a
+								href={process.env.NEXT_PUBLIC_DASHBOARD_URL || "http://localhost:3001/admin"}
+								className="rounded-md bg-accent px-4 py-2 text-sm font-bold text-accent-foreground transition hover:bg-accent/90"
+							>
+								Creator Dashboard
+							</a>
+						) : null}
+						<button
+							type="button"
+							onClick={handleLogout}
+							className="rounded-md border border-white/10 px-4 py-2 text-sm font-semibold text-muted-foreground transition hover:bg-muted"
+						>
+							Sign Out
+						</button>
+					</div>
+				</div>
+			</Container>
+		</section>
+	);
 }

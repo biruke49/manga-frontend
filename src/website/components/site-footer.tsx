@@ -19,11 +19,11 @@ export function SiteFooter({
 	const phone = contactPoints.find((point) => point.href?.startsWith("tel:"));
 
 	return (
-		<footer id="contact" className="border-t border-white/10 bg-card py-14 text-muted-foreground sm:py-20">
+		<footer id="contact" className="border-t border-white/10 bg-card/70 py-12 text-muted-foreground sm:py-16">
 			<Container>
 				<div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
 					<div>
-						<Link href="/" className="flex items-center gap-2 text-primary-foreground">
+						<Link href="/" className="flex items-center gap-3 text-foreground">
 							<span className="flex h-8 w-8 items-center justify-center rounded-md bg-accent text-sm font-black uppercase tracking-[0.08em] text-accent-foreground">
 								Y
 							</span>
@@ -45,12 +45,12 @@ export function SiteFooter({
 						</h3>
 						<div className="mt-5 space-y-3 text-sm text-muted-foreground/80">
 							{email ? (
-								<a href={email.href} className="block transition hover:text-primary-foreground">
+								<a href={email.href} className="block transition hover:text-foreground">
 									{email.value}
 								</a>
 							) : null}
 							{phone ? (
-								<a href={phone.href} className="block transition hover:text-primary-foreground">
+								<a href={phone.href} className="block transition hover:text-foreground">
 									{phone.value}
 								</a>
 							) : null}
@@ -58,7 +58,7 @@ export function SiteFooter({
 					</div>
 				</div>
 
-				<div className="mt-14 border-t border-white/10 pt-8 text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground/50">
+				<div className="mt-12 border-t border-white/10 pt-7 text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground/50">
 					<p>
 						(c) {new Date().getFullYear()} {siteConfig.name}. {siteConfig.tagline}
 					</p>
@@ -83,7 +83,7 @@ function FooterColumn({
 			<ul className="mt-5 space-y-3 text-sm text-muted-foreground/80">
 				{links.map((item) => (
 					<li key={item.label}>
-						<Link href={item.href} className="transition hover:text-primary-foreground">
+						<Link href={item.href} className="transition hover:text-foreground">
 							{item.label}
 						</Link>
 					</li>

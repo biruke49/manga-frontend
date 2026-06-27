@@ -1,7 +1,19 @@
 import type { LoginResponse, AuthProfile } from "../model/types";
 
 function getApiBaseUrl() {
-  return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3005";
+  const configuredUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  if (typeof window !== "undefined" && configuredUrl) {
+    try {
+      const url = new URL(configuredUrl);
+      if (url.port === "6000") {
+        return "/api/backend";
+      }
+    } catch {
+      return configuredUrl;
+    }
+  }
+
+  return configuredUrl || "/api/backend";
 }
 
 async function parseResponse<T>(response: Response): Promise<T> {
@@ -21,13 +33,24 @@ export async function login(
   password: string,
   type: string = "reader"
 ): Promise<LoginResponse> {
-  const response = await fetch(`${getApiBaseUrl()}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ phoneNumber, password, type }),
-    cache: "no-store",
-  });
-  return parseResponse<LoginResponse>(response);
+  const tryLogin = async (nextType: string) => {
+    const response = await fetch(`${getApiBaseUrl()}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phoneNumber, password, type: nextType }),
+      cache: "no-store",
+    });
+    return parseResponse<LoginResponse>(response);
+  };
+
+  try {
+    return await tryLogin(type);
+  } catch (error) {
+    if (type !== "employee") {
+      return await tryLogin("employee");
+    }
+    throw error;
+  }
 }
 
 export async function getUserInfo(token: string): Promise<AuthProfile | null> {

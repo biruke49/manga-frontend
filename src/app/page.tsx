@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { HomePage } from "@/website/pages/home-page";
 import { getPublicSiteContent } from "@/website/lib/public-site-content";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(): Promise<Metadata> {
 	const { siteConfig } = await getPublicSiteContent();
 

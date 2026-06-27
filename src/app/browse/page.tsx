@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: "Browse all published manga on the platform.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default function Page() {
   return <BrowsePage />;
 }

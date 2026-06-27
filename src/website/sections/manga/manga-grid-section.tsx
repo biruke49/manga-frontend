@@ -16,13 +16,13 @@ export function MangaGridSection({ mangas, title }: MangaGridSectionProps) {
           <div className="mb-8 flex items-end justify-between gap-4">
             <div>
               <p className="eyebrow text-accent">Fresh from the library</p>
-              <h2 className="mt-2 text-2xl font-black text-primary-foreground sm:text-3xl">
+              <h2 className="mt-2 text-2xl font-black text-foreground sm:text-3xl">
                 {title}
               </h2>
             </div>
             <Link
               href="/browse"
-              className="hidden rounded-md border border-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground transition hover:border-accent/50 hover:text-primary-foreground sm:inline-flex"
+              className="hidden rounded-md border border-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground transition hover:border-accent/50 hover:text-foreground sm:inline-flex"
             >
               View all
             </Link>

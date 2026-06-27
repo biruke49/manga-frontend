@@ -27,8 +27,8 @@ export function ChapterReaderSection({
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#090910] text-white">
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#090910]/92 backdrop-blur-md">
+    <div className="flex min-h-screen flex-col bg-background text-white">
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-background/92 backdrop-blur-md">
         <div className="flex items-center justify-between gap-4 px-4 py-3">
         <div className="flex min-w-0 items-center gap-3">
           <Link
@@ -60,7 +60,7 @@ export function ChapterReaderSection({
         </div>
       </header>
 
-      <div className="flex flex-1 flex-col items-center bg-[radial-gradient(circle_at_top,_rgba(233,69,96,0.12),_transparent_36%)]">
+      <div className="flex flex-1 flex-col items-center bg-[linear-gradient(180deg,_rgba(233,86,63,0.08),_transparent_28%)]">
         {pages.length === 0 ? (
           <div className="flex flex-1 items-center justify-center text-white/40">
             No pages available.
@@ -86,7 +86,7 @@ export function ChapterReaderSection({
             </div>
 
             {pages.length > 1 && (
-              <div className="sticky bottom-0 z-50 flex w-full items-center justify-center gap-3 border-t border-white/10 bg-[#090910]/92 px-4 py-4 backdrop-blur-md sm:gap-4">
+              <div className="sticky bottom-0 z-50 flex w-full items-center justify-center gap-3 border-t border-white/10 bg-background/92 px-4 py-4 backdrop-blur-md sm:gap-4">
                 <button
                   type="button"
                   onClick={handlePrev}
@@ -102,7 +102,7 @@ export function ChapterReaderSection({
                   type="button"
                   onClick={handleNext}
                   disabled={currentPage === pages.length - 1}
-                  className="h-11 rounded-lg bg-accent px-5 text-xs font-black uppercase tracking-[0.08em] text-accent-foreground transition hover:bg-accent/88 disabled:cursor-not-allowed disabled:opacity-30 sm:px-7"
+                  className="h-11 rounded-lg bg-accent px-5 text-xs font-black uppercase tracking-[0.08em] text-accent-foreground transition hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-30 sm:px-7"
                 >
                   Next
                 </button>

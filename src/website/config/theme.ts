@@ -19,19 +19,19 @@ interface ThemeTokens {
 }
 
 const defaultTheme: ThemeTokens = {
-	primary: "#151522",
-	primaryForeground: "#f1f0f7",
-	secondary: "#202844",
-	secondaryForeground: "#f1f0f7",
-	accent: "#e94560",
-	accentForeground: "#ffffff",
-	background: "#090910",
-	foreground: "#f1f0f7",
-	muted: "#202033",
-	mutedForeground: "#a6a3ba",
-	border: "#2b2b42",
-	card: "#151522",
-	cardForeground: "#f1f0f7",
+	primary: "#f5f1e8",
+	primaryForeground: "#111217",
+	secondary: "#272a34",
+	secondaryForeground: "#f5f1e8",
+	accent: "#e9563f",
+	accentForeground: "#fffaf2",
+	background: "#0c0d11",
+	foreground: "#f5f1e8",
+	muted: "#20222b",
+	mutedForeground: "#a9a291",
+	border: "#2b2d36",
+	card: "#15161c",
+	cardForeground: "#f5f1e8",
 };
 
 function readHexColor(value: string | undefined, fallback: ThemeColor): ThemeColor {
@@ -71,12 +71,12 @@ export function getThemeStyleVariables() {
 		"--muted-foreground": tokens.mutedForeground,
 		"--border": tokens.border,
 		"--input": tokens.border,
-		"--ring": tokens.secondary,
-		"--destructive": "#ba1a1a",
-		"--surface-panel": "#151522",
-		"--surface-panel-strong": "#202033",
-		"--surface-inverse": "#f1f0f7",
-		"--surface-inverse-foreground": "#090910",
+		"--ring": tokens.accent,
+		"--destructive": "#d64545",
+		"--surface-panel": "#15161c",
+		"--surface-panel-strong": "#20222b",
+		"--surface-inverse": "#f5f1e8",
+		"--surface-inverse-foreground": "#111217",
 	} as CSSProperties;
 }
 

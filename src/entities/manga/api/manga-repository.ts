@@ -1,7 +1,22 @@
 import type { Manga, MangaDetail, ReaderData } from "../model/types";
 
 function getApiBaseUrl() {
-  return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3005";
+  const configuredUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const internalUrl = process.env.API_INTERNAL_BASE_URL;
+  if (typeof window === "undefined" && internalUrl) {
+    try {
+      const url = new URL(internalUrl);
+      if (url.port === "6000") {
+        return `${process.env.FRONTEND_INTERNAL_BASE_URL || "http://localhost:6003"}/api/backend`;
+      }
+    } catch {}
+  }
+
+  if (configuredUrl && !configuredUrl.startsWith("/")) {
+    return internalUrl || configuredUrl;
+  }
+
+  return internalUrl || "http://localhost:6000/api";
 }
 
 async function parseResponse<T>(response: Response): Promise<T> {
@@ -24,7 +39,7 @@ export async function getPublicMangas(
       searchParams ? `?${searchParams}` : ""
     }`;
     const response = await fetch(url, {
-      next: { revalidate: 60 },
+      cache: "no-store",
     });
     const result = await parseResponse<{ data: Manga[] }>(response);
     return result.data ?? [];
@@ -39,7 +54,7 @@ export async function getPublicMangaDetail(
   try {
     const response = await fetch(
       `${getApiBaseUrl()}/manga/public-manga-detail/${id}`,
-      { next: { revalidate: 60 } }
+      { cache: "no-store" }
     );
     return parseResponse<MangaDetail>(response);
   } catch {
@@ -53,7 +68,7 @@ export async function getReaderChapter(
   try {
     const response = await fetch(
       `${getApiBaseUrl()}/chapters/reader/${chapterId}`,
-      { next: { revalidate: 60 } }
+      { cache: "no-store" }
     );
     return parseResponse<ReaderData>(response);
   } catch {
