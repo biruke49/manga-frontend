@@ -1,0 +1,136 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: Inter, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+}
+
+ :root {
+   --radius: 0.5rem;
+   --background: #090910;
+   --foreground: #f1f0f7;
+   --card: #151522;
+   --card-foreground: #f1f0f7;
+   --popover: #151522;
+   --popover-foreground: #f1f0f7;
+   --primary: #151522;
+   --primary-foreground: #f1f0f7;
+   --secondary: #202844;
+   --secondary-foreground: #f1f0f7;
+   --muted: #202033;
+   --muted-foreground: #a6a3ba;
+   --accent: #e94560;
+   --accent-foreground: #ffffff;
+   --destructive: #ba1a1a;
+   --border: #2b2b42;
+   --input: #2b2b42;
+   --ring: #e94560;
+   --surface-panel: #151522;
+   --surface-panel-strong: #202033;
+   --surface-inverse: #f1f0f7;
+   --surface-inverse-foreground: #090910;
+ }
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  a {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+}
+
+@layer components {
+  .section-space {
+    @apply py-20 sm:py-24 lg:py-28;
+  }
+
+  .hero-fade-in {
+    animation: hero-fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .hero-image-settle {
+    animation: hero-image-settle 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.1em];
+  }
+
+  .section-title {
+    @apply text-3xl font-medium leading-tight text-primary sm:text-4xl;
+  }
+
+  .premium-card {
+    @apply rounded-lg border border-border bg-card shadow-[0_10px_30px_rgba(0,0,0,0.04)];
+  }
+
+  .page-grid {
+    background-image: radial-gradient(circle, var(--blueprint-dot) 0.8px, transparent 0.8px);
+    background-size: 22px 22px;
+  }
+}
+
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-image-settle {
+  from {
+    transform: scale(1.04);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-fade-in,
+  .hero-image-settle {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
