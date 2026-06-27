@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --webpack -p 7003",
+    "dev": "next dev --webpack -p 6003",
     "build": "next build --webpack",
-    "start": "next start -p 7003",
+    "start": "next start -p 6003",
     "lint": "eslint",
     "test": "node --test test/*.test.mjs"
   },
