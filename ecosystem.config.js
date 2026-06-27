@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "fleet-frontend",
+      name: "manga-frontend",
       script: "npm",
       args: "start",
       env: {
