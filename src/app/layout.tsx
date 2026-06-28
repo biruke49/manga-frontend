@@ -43,6 +43,18 @@ export default async function RootLayout({
 			lang="en"
 			style={getThemeStyleVariables()}
 		>
+			<head>
+				<link rel="preconnect" href="https://fonts.googleapis.com" />
+				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+				<link
+					href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+					rel="stylesheet"
+				/>
+				<link
+					rel="stylesheet"
+					href="https://db.onlinewebfonts.com/c/8b75d9dcff6a48c35a46656192adf019?family=FSP+DEMO+-+PODIUM+Sharp+4.11"
+				/>
+			</head>
 			<body
 				className="antialiased bg-background font-sans"
 				suppressHydrationWarning

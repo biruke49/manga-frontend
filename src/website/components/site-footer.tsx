@@ -15,8 +15,7 @@ export function SiteFooter({
 	contactPoints: PublicContactPoints;
 	footerNavigation: PublicFooterNavigation;
 }) {
-	const email = contactPoints.find((point) => point.href?.startsWith("mailto:"));
-	const phone = contactPoints.find((point) => point.href?.startsWith("tel:"));
+	const linkedContactPoints = contactPoints.filter((point) => point.href);
 
 	return (
 		<footer id="contact" className="border-t border-white/10 bg-card/70 py-12 text-muted-foreground sm:py-16">
@@ -36,26 +35,21 @@ export function SiteFooter({
 						</p>
 					</div>
 
-					<FooterColumn title="Manga" links={footerNavigation.services} />
-					<FooterColumn title="Company" links={footerNavigation.company} />
+					<FooterColumn title="Manga" links={footerNavigation.manga} />
+					<FooterColumn title="Account" links={footerNavigation.account} />
 
-					<div>
+					{linkedContactPoints.length > 0 ? <div>
 						<h3 className="text-xs font-bold uppercase tracking-[0.1em] text-muted-foreground/70">
 							Contact
 						</h3>
 						<div className="mt-5 space-y-3 text-sm text-muted-foreground/80">
-							{email ? (
-								<a href={email.href} className="block transition hover:text-foreground">
-									{email.value}
+							{linkedContactPoints.map((point) => (
+								<a key={point.label} href={point.href} className="block transition hover:text-foreground">
+									{point.value}
 								</a>
-							) : null}
-							{phone ? (
-								<a href={phone.href} className="block transition hover:text-foreground">
-									{phone.value}
-								</a>
-							) : null}
+							))}
 						</div>
-					</div>
+					</div> : null}
 				</div>
 
 				<div className="mt-12 border-t border-white/10 pt-7 text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground/50">

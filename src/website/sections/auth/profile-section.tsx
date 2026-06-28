@@ -8,20 +8,29 @@ import type { AuthProfile } from "@/entities/auth/model/types";
 
 export function ProfileSection() {
 	const router = useRouter();
+	const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL;
 	const [profile, setProfile] = useState<AuthProfile | null>(null);
 	const [ready, setReady] = useState(false);
 
 	useEffect(() => {
-		const stored = localStorage.getItem("auth_profile");
-		const token = localStorage.getItem("auth_token");
-		if (stored && token) {
-			try {
-				setProfile(JSON.parse(stored) as AuthProfile);
-			} catch {
-				setProfile(null);
+		let cancelled = false;
+		queueMicrotask(() => {
+			if (cancelled) return;
+			const stored = localStorage.getItem("auth_profile");
+			const token = localStorage.getItem("auth_token");
+			if (stored && token) {
+				try {
+					setProfile(JSON.parse(stored) as AuthProfile);
+				} catch {
+					setProfile(null);
+				}
 			}
-		}
-		setReady(true);
+			setReady(true);
+		});
+
+		return () => {
+			cancelled = true;
+		};
 	}, []);
 
 	useEffect(() => {
@@ -82,9 +91,9 @@ export function ProfileSection() {
 					</div>
 
 					<div className="mt-8 flex gap-3">
-						{profile.type === "creator" ? (
+						{profile.type === "creator" && dashboardUrl ? (
 							<a
-								href={process.env.NEXT_PUBLIC_DASHBOARD_URL || "http://localhost:3001/admin"}
+								href={dashboardUrl}
 								className="rounded-md bg-accent px-4 py-2 text-sm font-bold text-accent-foreground transition hover:bg-accent/90"
 							>
 								Creator Dashboard

@@ -1,3 +1,4 @@
+import { BookOpen } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -24,6 +25,7 @@ export async function MangaDetailSection({ id }: MangaDetailSectionProps) {
 						className="object-cover"
 						sizes="100vw"
 						aria-hidden="true"
+						unoptimized
 					/>
 				</div>
 			) : null}
@@ -38,6 +40,7 @@ export async function MangaDetailSection({ id }: MangaDetailSectionProps) {
 								fill
 								className="object-cover"
 								sizes="300px"
+								unoptimized
 							/>
 						) : (
 							<div className="flex h-full items-center justify-center text-muted-foreground">
@@ -91,10 +94,19 @@ export async function MangaDetailSection({ id }: MangaDetailSectionProps) {
 						</div>
 
 						<div className="flex flex-col gap-3 sm:flex-row">
+							{manga.pdfUrl ? (
+								<Link
+									href={`/manga/${manga.id}/read`}
+									className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-accent px-7 text-xs font-black uppercase tracking-[0.1em] text-accent-foreground transition hover:bg-accent/90"
+								>
+									<BookOpen className="h-4 w-4" />
+									Open book
+								</Link>
+							) : null}
 							{firstChapter ? (
 								<Link
 									href={`/manga/${manga.id}/chapter/${firstChapter.id}`}
-									className="inline-flex h-12 items-center justify-center rounded-md bg-accent px-7 text-xs font-black uppercase tracking-[0.1em] text-accent-foreground transition hover:bg-accent/90"
+									className="inline-flex h-12 items-center justify-center rounded-md border border-white/10 px-7 text-xs font-black uppercase tracking-[0.1em] text-foreground transition hover:border-accent/50 hover:bg-white/5"
 								>
 									Read first chapter
 								</Link>

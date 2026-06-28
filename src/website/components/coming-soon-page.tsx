@@ -25,22 +25,22 @@ export function ComingSoonPage({ siteConfig }: { siteConfig: PublicSiteConfig })
 					<p className="mt-7 max-w-xl text-base leading-8 text-white/76 sm:text-lg">
 						The full website is being prepared for launch. For creator access, reading updates, or community questions, contact the team directly.
 					</p>
-					<div className="mt-10 flex flex-col gap-3 sm:flex-row">
-						<a
+					{siteConfig.phoneHref || siteConfig.email ? <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+						{siteConfig.phoneHref ? <a
 							href={siteConfig.phoneHref}
 							className="inline-flex h-12 items-center justify-center bg-secondary px-6 text-[11px] font-black uppercase tracking-[0.18em] text-white transition hover:bg-secondary/90"
 						>
 							Call {siteConfig.phoneDisplay}
-						</a>
-						<a
+						</a> : null}
+						{siteConfig.email ? <a
 							href={`mailto:${siteConfig.email}`}
 							className="inline-flex h-12 items-center justify-center border border-white/25 bg-white/10 px-6 text-[11px] font-black uppercase tracking-[0.18em] text-white transition hover:bg-white hover:text-primary"
 						>
 							Email Support
-						</a>
-					</div>
+						</a> : null}
+					</div> : null}
 					<div className="mt-12 grid gap-4 text-sm leading-7 text-white/68 sm:grid-cols-2">
-						<p>{siteConfig.address}</p>
+						{siteConfig.address ? <p>{siteConfig.address}</p> : null}
 						<p>{siteConfig.tagline}</p>
 					</div>
 				</div>

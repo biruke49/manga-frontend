@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { login } from "@/entities/auth/api/auth-repository";
 import { Container } from "@/website/components/container";
 
@@ -21,11 +20,7 @@ export function LoginSection() {
       localStorage.setItem("auth_token", result.accessToken);
       localStorage.setItem("refresh_token", result.refreshToken);
       localStorage.setItem("auth_profile", JSON.stringify(result.profile));
-      if (type === "creator") {
-        window.location.assign("/profile");
-      } else {
-        window.location.assign("/profile");
-      }
+			window.location.assign("/profile");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     } finally {
@@ -111,12 +106,6 @@ export function LoginSection() {
             </button>
           </form>
 
-          <p className="mt-4 text-center text-xs text-muted-foreground">
-            Don&apos;t have an account?{" "}
-            <Link href="/login" className="text-foreground underline">
-              Contact admin
-            </Link>
-          </p>
         </div>
       </Container>
     </section>

@@ -6,9 +6,10 @@ import { getPublicSiteContent } from "@/website/lib/public-site-content";
 
 interface SiteShellProps {
 	children: ReactNode;
+	hideHeader?: boolean;
 }
 
-export async function SiteShell({ children }: SiteShellProps) {
+export async function SiteShell({ children, hideHeader = false }: SiteShellProps) {
 	const { siteConfig, contactPoints, footerNavigation, isBeingMaintained, mainNavigation } = await getPublicSiteContent();
 	const showComingSoon = process.env.NODE_ENV === "production" && isBeingMaintained;
 
@@ -23,7 +24,7 @@ export async function SiteShell({ children }: SiteShellProps) {
 					Maintenance mode is active. Availability and response windows may shift while updates are in progress.
 				</div>
 			)}
-			<SiteHeader siteConfig={siteConfig} mainNavigation={mainNavigation} />
+			{hideHeader ? null : <SiteHeader siteConfig={siteConfig} mainNavigation={mainNavigation} />}
 			<main>{children}</main>
 			<SiteFooter siteConfig={siteConfig} contactPoints={contactPoints} footerNavigation={footerNavigation} />
 		</div>

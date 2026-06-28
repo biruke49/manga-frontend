@@ -27,6 +27,7 @@ export function MangaCard({ manga, variant = "default" }: MangaCardProps) {
 						fill
 						className="object-cover transition duration-500 group-hover:scale-105"
 						sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
+						unoptimized
 					/>
 				) : (
 					<div className="flex h-full items-center justify-center bg-[linear-gradient(135deg,_rgba(233,86,63,0.22),_rgba(48,51,61,0.78))] px-4 text-center text-xs font-bold uppercase tracking-[0.12em] text-foreground/60">

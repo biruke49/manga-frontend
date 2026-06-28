@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getReaderChapter } from "@/entities/manga/api/manga-repository";
 import { ReaderPage } from "@/website/pages/reader-page";
 
 interface PageProps {
@@ -9,9 +10,11 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { chapterId } = await params;
+  const readerData = await getReaderChapter(chapterId);
+  const chapter = readerData?.chapter;
   return {
-    title: `Chapter Reader`,
-    description: `Reading chapter.`,
+    title: chapter?.title || (chapter ? `Chapter ${chapter.chapterNumber}` : "Chapter Reader"),
+    description: chapter ? `Read chapter ${chapter.chapterNumber} on Yishak.` : "Read manga on Yishak.",
   };
 }
 

@@ -4,6 +4,8 @@ export interface Manga {
   description: string;
   coverImageFilename: string;
   coverImageUrl: string;
+	pdfFilename: string;
+	pdfUrl: string;
   status: string;
   authorId: string;
   artist: string;

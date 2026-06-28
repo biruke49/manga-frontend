@@ -1,92 +1,106 @@
+import { ArrowUpRight, BookOpen } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/website/components/container";
+import { HeroNavbar } from "@/website/components/hero-navbar";
 import { MangaCard } from "@/website/components/manga-card";
 import type { Manga } from "@/entities/manga/model/types";
+import type { getPublicSiteContent } from "@/website/lib/public-site-content";
+
+type PublicSiteConfig = Awaited<ReturnType<typeof getPublicSiteContent>>["siteConfig"];
+type PublicNavigation = Awaited<ReturnType<typeof getPublicSiteContent>>["mainNavigation"];
+type PublicHeroContent = Awaited<ReturnType<typeof getPublicSiteContent>>["heroContent"];
+
+const HERO_VIDEO_URL =
+	"https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260606_154941_df1a96e1-a06f-450c-bd02-d863414cc1a0.mp4";
 
 interface HomeHeroSectionProps {
-	hero: {
-		eyebrow: string;
-		title: string[];
-		description: string;
-		primaryCta: {
-			label: string;
-			href: string;
-		};
-		secondaryCta: {
-			label: string;
-			href: string;
-		};
-		announcement?: string;
-		announcementSecondary?: string;
-	};
+	hero: PublicHeroContent;
 	mangas?: Manga[];
+	siteConfig: PublicSiteConfig;
+	mainNavigation: PublicNavigation;
 }
 
-const readerValues = [
-	{
-		title: "Original Ethiopian worlds",
-		description: "Stories shaped by local culture, modern characters, folklore, action, romance, and drama.",
-	},
-	{
-		title: "A shelf that stays simple",
-		description: "Covers, chapters, and creators are easy to scan so readers can get into the story quickly.",
-	},
-	{
-		title: "Ready for creators",
-		description: "A focused place for artists to publish chapters and build an audience around their work.",
-	},
-];
-
-const fallbackGenres = ["Action", "Romance", "Fantasy", "Drama", "Folklore", "Slice of Life"];
-
-export function HomeHeroSection({ hero, mangas = [] }: HomeHeroSectionProps) {
-	const showcaseMangas = mangas.filter((manga) => manga.coverImageUrl).slice(0, 5);
-	const featuredManga = showcaseMangas[0];
+export function HomeHeroSection({ hero, mangas = [], siteConfig, mainNavigation }: HomeHeroSectionProps) {
+	const featuredManga = mangas.find((manga) => manga.coverImageUrl);
 	const totalChapters = mangas.reduce((total, manga) => total + manga.chapterCount, 0);
 	const latestMangas = mangas.slice(0, 8);
-	const genres = Array.from(new Set(mangas.flatMap((manga) => manga.genres ?? []).filter(Boolean))).slice(0, 6);
-	const displayGenres = genres.length > 0 ? genres : fallbackGenres;
 
 	return (
 		<div className="overflow-hidden">
-			<section className="relative border-b border-white/10">
-				<div className="absolute inset-0 bg-[linear-gradient(180deg,_rgba(255,255,255,0.035),_transparent_42%)]" />
-				<Container className="relative grid min-h-[calc(100svh-4rem)] items-center gap-10 py-12 lg:grid-cols-[minmax(0,0.95fr)_minmax(360px,0.82fr)] lg:py-16">
+			<HeroNavbar siteConfig={siteConfig} mainNavigation={mainNavigation} />
+
+			<section className="relative flex min-h-[100svh] items-center overflow-hidden border-b border-white/10">
+				<video
+					className="absolute inset-0 h-full w-full object-cover"
+					autoPlay
+					muted
+					loop
+					playsInline
+					src={HERO_VIDEO_URL}
+				/>
+				<div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/55 to-background" />
+
+				<Container className="relative z-10 py-32 lg:py-36">
 					<div className="max-w-3xl">
-						<p className="eyebrow text-accent">
+						<p className="animate-fade-up mb-6 flex items-center gap-2 font-inter text-xs uppercase tracking-[0.3em] text-white/70 sm:text-sm lg:mb-8">
+							<BookOpen className="h-4 w-4 text-white/70" />
 							{hero.eyebrow || "Ethiopia Manga Community"}
 						</p>
-						<h1 className="mt-4 text-4xl font-black leading-[1.02] text-foreground sm:text-6xl lg:text-7xl">
-							Read Ethiopian manga without the noise.
+
+						<h1 className="animate-fade-up-delay-1 font-podium uppercase leading-[0.92] tracking-normal text-white">
+							<span className="block text-[clamp(2.8rem,8vw,7rem)]">Read.</span>
+							<span className="block text-[clamp(2.8rem,8vw,7rem)]">Create.</span>
+							<span className="block text-[clamp(2.8rem,8vw,7rem)]">Share.</span>
 						</h1>
-						<p className="mt-5 max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg">
+
+						<p className="animate-fade-up-delay-2 mt-6 max-w-md font-inter text-sm leading-relaxed text-white/70 sm:text-base lg:mt-8">
 							Yishak brings Ethiopian manga, comics, and creator-led stories into one clean reading library.
 						</p>
 
-						<div className="mt-8 flex flex-col gap-3 sm:flex-row">
+						<div className="animate-fade-up-delay-3 mt-8 flex flex-wrap items-center gap-4 sm:gap-6 lg:mt-10">
 							<Link
 								href={hero.primaryCta.href || "/browse"}
-								className="inline-flex h-12 items-center justify-center rounded-md bg-accent px-7 text-xs font-black uppercase tracking-[0.12em] text-accent-foreground transition hover:bg-accent/90"
+								className="group inline-flex items-center gap-2 bg-accent px-5 py-3 text-[11px] font-black uppercase tracking-widest text-accent-foreground transition hover:bg-accent/90 sm:px-7 sm:py-4 sm:text-xs"
 							>
 								{hero.primaryCta.label || "Browse manga"}
+								<ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
 							</Link>
+
 							<Link
 								href="/login"
-								className="inline-flex h-12 items-center justify-center rounded-md border border-white/12 bg-white/[0.03] px-7 text-xs font-black uppercase tracking-[0.12em] text-foreground transition hover:border-accent/45 hover:bg-white/[0.06]"
+								className="inline-flex items-center border border-white/30 px-5 py-3 text-[11px] font-black uppercase tracking-widest text-white transition hover:border-white/60 hover:bg-white/10 sm:px-7 sm:py-4 sm:text-xs"
 							>
 								Publish your story
 							</Link>
+
+							{featuredManga ? (
+								<Link href={`/manga/${featuredManga.id}`} className="hidden items-center gap-3 sm:flex">
+									<span className="relative h-12 w-9 shrink-0 overflow-hidden rounded-sm bg-white/10">
+										<Image
+											src={featuredManga.coverImageUrl}
+											alt={featuredManga.title}
+											fill
+											className="object-cover"
+											sizes="36px"
+											unoptimized
+										/>
+									</span>
+									<span className="text-xs uppercase tracking-wider text-white/60">
+										<span className="block text-white/40">Featured series</span>
+										<span className="line-clamp-1">{featuredManga.title}</span>
+									</span>
+								</Link>
+							) : null}
 						</div>
 
-						<div className="mt-9 grid max-w-xl grid-cols-3 overflow-hidden rounded-lg border border-white/10 bg-card/70">
-							<Stat value={mangas.length || "New"} label="series" />
-							<Stat value={totalChapters || "Fresh"} label="chapters" />
-							<Stat value="ET" label="made" last />
-						</div>
+						{mangas.length > 0 ? (
+							<div className="animate-fade-up-delay-4 mt-8 flex flex-wrap gap-6 sm:mt-10 sm:gap-12 lg:mt-14 lg:gap-16">
+								<Stat value={mangas.length} label="series" />
+								<Stat value={totalChapters} label="chapters" />
+							</div>
+						) : null}
 					</div>
-
-					<HeroShelf featuredManga={featuredManga} showcaseMangas={showcaseMangas} />
 				</Container>
 			</section>
 
@@ -117,143 +131,21 @@ export function HomeHeroSection({ hero, mangas = [] }: HomeHeroSectionProps) {
 							))}
 						</div>
 					) : (
-						<div className="grid gap-4 md:grid-cols-3">
-							{readerValues.map((item) => (
-								<ValuePanel key={item.title} {...item} />
-							))}
-						</div>
+						<p className="text-sm text-muted-foreground">No published series yet.</p>
 					)}
 				</Container>
 			</section>
-
-			<section className="section-space">
-				<Container>
-					<div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
-						<div>
-							<p className="eyebrow text-accent">Discover</p>
-							<h2 className="mt-2 text-3xl font-black leading-tight text-foreground sm:text-4xl">
-								Simple paths into new stories.
-							</h2>
-						</div>
-						<div className="grid gap-4 md:grid-cols-3">
-							{readerValues.map((item) => (
-								<ValuePanel key={item.title} {...item} />
-							))}
-						</div>
-					</div>
-
-					<div className="mt-10 flex flex-wrap gap-2 border-t border-white/10 pt-8">
-						{displayGenres.map((genre) => (
-							<span
-								key={genre}
-								className="rounded-md border border-white/10 bg-card px-3 py-2 text-xs font-bold text-muted-foreground"
-							>
-								{genre}
-							</span>
-						))}
-					</div>
-				</Container>
-			</section>
 		</div>
 	);
 }
 
-function HeroShelf({
-	featuredManga,
-	showcaseMangas,
-}: {
-	featuredManga?: Manga;
-	showcaseMangas: Manga[];
-}) {
+function Stat({ value, label }: { value: string | number; label: string }) {
 	return (
-		<div className="mx-auto w-full max-w-[540px]">
-			<div className="rounded-lg border border-white/10 bg-card p-4 shadow-[0_24px_70px_rgba(0,0,0,0.28)]">
-				<div className="grid gap-4 sm:grid-cols-[1.1fr_0.9fr]">
-					{featuredManga ? (
-						<Link
-							href={`/manga/${featuredManga.id}`}
-							className="group relative aspect-[3/4] overflow-hidden rounded-lg bg-muted"
-						>
-							<Image
-								src={featuredManga.coverImageUrl}
-								alt={featuredManga.title}
-								fill
-								className="object-cover transition duration-500 group-hover:scale-105"
-								sizes="(max-width: 1024px) 82vw, 300px"
-								priority
-							/>
-							<div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/92 to-transparent p-4 pt-20">
-								<p className="line-clamp-2 text-lg font-black leading-tight text-foreground">
-									{featuredManga.title}
-								</p>
-								<p className="mt-1 text-xs text-muted-foreground">
-									{featuredManga.chapterCount} chapters
-								</p>
-							</div>
-						</Link>
-					) : (
-						<FauxCover title="Yishak originals" large />
-					)}
-
-					<div className="grid grid-cols-2 gap-3 sm:grid-cols-1">
-						{showcaseMangas.slice(1, 3).map((manga) => (
-							<Link
-								key={manga.id}
-								href={`/manga/${manga.id}`}
-								className="group relative aspect-[3/4] overflow-hidden rounded-lg bg-muted sm:aspect-[16/11]"
-							>
-								<Image
-									src={manga.coverImageUrl}
-									alt={manga.title}
-									fill
-									className="object-cover transition duration-500 group-hover:scale-105"
-									sizes="240px"
-								/>
-							</Link>
-						))}
-						{showcaseMangas.length < 3 ? (
-							<>
-								<FauxCover title="Folklore" />
-								<FauxCover title="New chapter" />
-							</>
-						) : null}
-					</div>
-				</div>
-			</div>
-		</div>
-	);
-}
-
-function FauxCover({ title, large = false }: { title: string; large?: boolean }) {
-	return (
-		<div
-			className={`relative overflow-hidden rounded-lg bg-[linear-gradient(145deg,_#30333d,_#181a21_56%,_#101116)] ${
-				large ? "aspect-[3/4]" : "aspect-[3/4] sm:aspect-[16/11]"
-			}`}
-		>
-			<div className="absolute inset-4 rounded-md border border-white/10" />
-			<div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/92 to-transparent p-4 pt-20">
-				<p className="text-sm font-black uppercase tracking-[0.1em] text-foreground">{title}</p>
-				<p className="mt-1 text-[10px] font-bold uppercase tracking-[0.12em] text-accent">Original series</p>
-			</div>
-		</div>
-	);
-}
-
-function ValuePanel({ title, description }: { title: string; description: string }) {
-	return (
-		<div className="rounded-lg border border-white/10 bg-card p-5">
-			<h3 className="text-lg font-black text-foreground">{title}</h3>
-			<p className="mt-3 text-sm leading-6 text-muted-foreground">{description}</p>
-		</div>
-	);
-}
-
-function Stat({ value, label, last = false }: { value: string | number; label: string; last?: boolean }) {
-	return (
-		<div className={`p-4 ${last ? "" : "border-r border-white/10"}`}>
-			<p className="text-2xl font-black text-foreground">{value}</p>
-			<p className="mt-1 text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground">{label}</p>
+		<div>
+			<p className="font-inter text-2xl font-bold tracking-normal text-white sm:text-4xl lg:text-5xl">
+				{value}
+			</p>
+			<p className="mt-1 text-[9px] font-bold uppercase tracking-widest text-white/50 sm:text-xs">{label}</p>
 		</div>
 	);
 }
